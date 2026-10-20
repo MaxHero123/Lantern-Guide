@@ -1,0 +1,11 @@
+# Lantern Guide needs Python 3.10 or newer.
+# IMPORTANT: scikit-learn must match the version your model was saved with.
+# Open models/nana_config.json, find "sklearn_version", and put that number below (e.g. 1.6.1).
+scikit-learn==1.6.1
+numpy
+joblib
+# For the full ensemble (roberta). Leave these out to run the small classic-only model.
+torch
+transformers
+# Apple's on-device text reader (Mac only; skipped automatically elsewhere)
+pyobjc-framework-Vision; sys_platform == "darwin"

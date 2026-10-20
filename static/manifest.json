@@ -1,0 +1,20 @@
+{
+ "name": "Lantern Guide",
+ "short_name": "Lantern",
+ "start_url": "/",
+ "display": "standalone",
+ "background_color": "#EEF3F8",
+ "theme_color": "#1F2A44",
+ "icons": [
+  {
+   "src": "/icon-180.png",
+   "sizes": "180x180",
+   "type": "image/png"
+  },
+  {
+   "src": "/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

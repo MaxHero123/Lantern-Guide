@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1F2A44">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lantern">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <link rel="manifest" href="/manifest.json">
+  <title>Lantern Guide</title>
+  <meta name="description" content="Lantern Guide lights the way for you: check suspicious messages, read small print, keep track of your day, and find what's happening nearby.">
+  <link rel="icon" href="/lantern.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" id="brandBtn" aria-label="Lantern Guide home">
+      <img src="/lantern-light.svg" alt="" width="48" height="48">
+      <span><strong>Lantern Guide</strong><small>Lights the way for you</small></span>
+    </button>
+    <div class="clock" id="clock" aria-live="off"></div>
+  </header>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <main id="main" tabindex="-1"></main>
+
+  <div class="overlay sheet" id="sheet" hidden></div>
+
+  <div class="overlay" id="remind" hidden>
+    <div class="remcard" role="alertdialog" aria-modal="true" aria-labelledby="remTitle" aria-describedby="remDetail">
+      <img src="/lantern.svg" alt="" width="72" height="72" class="remlamp">
+      <div class="when" id="remWhen"></div>
+      <h2 id="remTitle"></h2>
+      <p id="remDetail"></p>
+      <div class="rembtns" id="remBtns"></div>
+    </div>
+  </div>
+
+  <nav class="bottombar" id="bottombar" hidden>
+    <button class="navbtn" data-go="home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M6 10v10h12V10"/></svg><span>Home</span></button>
+    <button class="navbtn" data-go="planner">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Planner</span></button>
+    <a class="navbtn call" id="callBtn" href="#">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+      <span id="callLabel">Call family</span></a>
+    <button class="navbtn" data-go="settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg><span>Settings</span></button>
+  </nav>
+
+  <script src="/app.js"></script>
+</body>
+</html>
