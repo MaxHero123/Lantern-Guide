@@ -1,0 +1,30 @@
+{
+  "labels": [
+    "ham",
+    "spam",
+    "smishing"
+  ],
+  "nana_model": "ensemble (70% classic)",
+  "thresholds": {
+    "classic (logreg)": {
+      "warn": 0.9724113041498007,
+      "unsure": 0.8647322071018672
+    },
+    "transformer (roberta-base x1)": {
+      "warn": 0.9569215178489685,
+      "unsure": 0.8840429186820984
+    },
+    "ensemble (70% classic)": {
+      "warn": 0.9273229474028198,
+      "unsure": 0.782194722848435
+    }
+  },
+  "ensemble_classic_weight": 0.7,
+  "classic_kind": "logreg",
+  "n_seeds": 1,
+  "transformer_name": "roberta-base",
+  "max_len": 128,
+  "use_red_flags": true,
+  "trained_on": "label",
+  "sklearn_version": "1.6.1"
+}
