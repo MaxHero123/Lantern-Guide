@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the Scam Detector Works</title>
+<meta name="description" content="How Lantern Guide's scam detector works: the data, the two models, the ensemble, and how it decides between scam, junk, not sure and normal.">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/mark.jpg" alt=""><span>LANTERN GUIDE</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#scams">Scam protection</a>
+      <a href="index.html#features">Features</a>
+      <a href="how-it-works.html" aria-current="page">How the AI works</a>
+      <a class="btn gold sm" href="https://maxhero123-lantern-guide.hf.space">Open Lantern Guide</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="page-hero">
+    <div class="wrap">
+      <span class="pill">Under the hood</span>
+      <h1>How the scam detector works</h1>
+      <p class="lead" style="font-size:1.08rem">Lantern Guide doesn't send your messages to an outside AI company. It uses its own machine-learning model, trained by Max on more than 26,000 text messages, to sort each message into <strong>normal</strong>, <strong>junk</strong> or <strong>scam</strong>, and then explains its answer in plain words.</p>
+    </div>
+  </div>
+
+  <section class="white">
+    <div class="wrap">
+      <div class="kicker">From message to answer</div>
+      <h2>What happens when you check a message</h2>
+      <div class="flow">
+        <div class="card"><h3>Read the message</h3><p>Paste a text or email, or upload a screenshot. Screenshots are turned into text first.</p></div>
+        <div class="card"><h3>Clean it up</h3><p>Links, emails and phone numbers become placeholders, and disguises like "FR33" or "c.l.a.i.m" are undone.</p></div>
+        <div class="card"><h3>Two models read it</h3><p>A fast word-pattern model and a RoBERTa language model each estimate how likely it is to be normal, junk or a scam.</p></div>
+        <div class="card"><h3>Combine and decide</h3><p>Their answers are blended, checked against tuned thresholds and red-flag rules, then explained in everyday words.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="kicker">The two models</div>
+      <h2>Two different ways of reading</h2>
+      <p>Scammers change their wording all the time. Using two models that read in different ways makes the detector harder to fool.</p>
+      <div class="models">
+        <div class="card"><div class="badge b-gold"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></svg></div><h3>Classic model: word patterns</h3>
+          <p style="font-size:.92rem">Turns each message into thousands of word and letter-pattern features (TF-IDF on word pairs and 3–5 letter chunks), then uses <strong>logistic regression</strong> to estimate each class. Three classic models were compared (logistic regression, naive Bayes and a support vector machine), and logistic regression scored best. It's fast and small, and good at spotting scam vocabulary.</p></div>
+        <div class="card"><div class="badge b-sky"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5a3 3 0 0 0-3 3 3 3 0 0 0-1.5 5.3A3 3 0 0 0 7 18a3 3 0 0 0 5 1V5.5a2.5 2.5 0 0 0-3-1z"/><path d="M15 4.5a3 3 0 0 1 3 3 3 3 0 0 1 1.5 5.3A3 3 0 0 1 17 18a3 3 0 0 1-5 1"/></svg></div><h3>RoBERTa: reading in context</h3>
+          <p style="font-size:.92rem">A transformer language model (<strong>roberta-base</strong>) fine-tuned on the training messages on a GPU in Google Colab. It reads whole sentences in context, so it can recognize a scam even when it's worded in a new way. Training used class weights, <strong>label smoothing</strong> and <strong>early stopping</strong>.</p></div>
+      </div>
+      <div class="mix">
+        <h3>The blend</h3>
+        <div class="bar" role="img" aria-label="70 percent classic model, 30 percent RoBERTa"><span class="c">70% classic</span><span class="t">30% RoBERTa</span></div>
+        <p class="note">Blends from 10% to 90% classic were tested on validation messages. 70/30 scored best at separating scams and junk from normal messages (precision-recall AUC).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cream">
+    <div class="wrap">
+      <div class="kicker">The training data</div>
+      <h2>Good answers start with good data</h2>
+      <div class="stats">
+        <div class="card"><b>26,395</b><span>text messages</span></div>
+        <div class="card"><b>5</b><span>sources: four public datasets (2011–2025) plus modern examples</span></div>
+        <div class="card"><b>823</b><span>wrong labels corrected after review</span></div>
+        <div class="card"><b>400</b><span>test messages labeled blind</span></div>
+      </div>
+      <ul class="checks" style="margin-top:1.8rem">
+        <li><strong>Cleaning the labels.</strong> About 18% of the newest dataset's "scams" were really ordinary messages, like verification codes and delivery updates. 2,224 suspicious labels were reviewed: 823 were corrected and 501 unclear messages were removed.</li>
+        <li><strong>A fair test.</strong> Messages were split by scam campaign into training (19,754), validation (3,308) and test (3,333), so copies of the same scam never appear in both training and testing.</li>
+        <li><strong>A trustworthy score.</strong> 400 test messages were labeled blind, without seeing the dataset's label, so the final score doesn't depend on mistakes in the original data.</li>
+        <li><strong>Learning to see through tricks.</strong> Some training messages got disguised copies (number-for-letter swaps, look-alike letters, dots, odd capitals). Three other tricks were kept secret and used only to stress-test the model on disguises it had never seen.</li>
+      </ul>
+      <p class="note">The label corrections and the 400 blind labels were made with the help of an AI reviewer and spot-checked by Max.</p>
+    </div>
+  </section>
+
+  <section class="white">
+    <div class="wrap">
+      <div class="kicker">Making the call</div>
+      <h2>Honest answers, including "I'm not sure"</h2>
+      <p>Instead of one yes/no cutoff, Lantern Guide uses two thresholds, both set on validation messages it never trained on.</p>
+      <div class="zones">
+        <div class="card ok"><h3 class="zh"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m8 12.3 2.8 2.8L16.2 9.5"/></svg> Looks normal</h3><p class="note" style="margin:0">Below both thresholds.</p></div>
+        <div class="card unsure"><h3 class="zh"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2 1-1.2 1.8v.4M12 16.8v.2"/></svg> Not sure</h3><p class="note" style="margin:0">In between: "check with a family member before replying."</p></div>
+        <div class="card warn"><h3 class="zh"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v5M12 16.5v.5"/><path d="M10.3 3.9 2.6 17.3A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.7L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg> Scam or junk</h3><p class="note" style="margin:0">Above the warning threshold, set so that at most about 1% of normal messages get a warning.</p></div>
+      </div>
+      <ul class="checks" style="margin-top:1.8rem">
+        <li><strong>Red-flag rules</strong> catch things real companies essentially never ask for by text, like gift cards, remote access to your computer or your PIN. A strong red flag turns a borderline answer into a warning.</li>
+        <li><strong>Link checks</strong> compare where links really go with the company the message claims to be from, catching look-alikes like "paypa1.com." Messages that only link to a company's real website get a calmer answer.</li>
+        <li><strong>Plain-words reasons.</strong> Every verdict comes with reasons, like "It asks you to pay with gift cards," and what to do next.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="kicker">Results</div>
+      <h2>How well it works</h2>
+      <p>Scored on the 400-message blind test set, using thresholds fixed in advance on validation data.</p>
+      <!-- Fill these in from MyDrive/NANA/final_results_v4.csv (the "ensemble" row on the "verified test (blind labels)" line). -->
+      <table class="res">
+        <thead><tr><th scope="col">Measure</th><th scope="col">What it means</th><th scope="col">Result</th></tr></thead>
+        <tbody>
+          <tr><td>Scams warned</td><td>Real scams that got a warning</td><td>[add]</td></tr>
+          <tr><td>Scams warned or "not sure"</td><td>Scams that got a warning or a "check with family"</td><td>[add]</td></tr>
+          <tr><td>False alarm rate</td><td>Normal messages wrongly warned</td><td>[add]</td></tr>
+          <tr><td>Warning precision</td><td>Warnings that really were scam or junk</td><td>[add]</td></tr>
+        </tbody>
+      </table>
+      <p class="note">No scam detector is perfect. That's why Lantern Guide always explains its answer, says when it isn't sure, and suggests talking to family before sending money.</p>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <div class="logo-box"><img src="img/logo.jpg" alt="Lantern Guide logo"></div>
+      <h2>Try it with a message of your own.</h2>
+      <div class="btns"><a class="btn gold" href="https://maxhero123-lantern-guide.hf.space">Open Lantern Guide</a><a class="btn" href="index.html">Back to the overview</a></div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span><strong>LANTERN GUIDE</strong> · Made by Max for the 2026 Congressional App Challenge</span>
+  <span><a href="index.html">Overview</a> · <a href="how-it-works.html">How the AI works</a></span></div></footer>
+</body>
+</html>
